@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30">
+	<Properties>
+		<Property name="LOG_PATTERN">standard %d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %-5p [%c] [%thread] %m%n</Property>
+		<Property name="LOG_PATTERN_ERROR">restricted %d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %-5p [%c] [%thread] Namespace=${evn:POD_NAMESPACE} PODName=${evn:POD_NAME} AppName=${env:DEPLOYMENT_NAME} version=${evn:DEPLOYMENT_VERSION} %m%n</Property>
+		<Property name="APP_LOG_ROOT">c:/temp</Property>
+	</Properties>
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<!-- <filters>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="FETAL" onMatch="ACCEPT"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="WARN" onMatch="ACCEPT"
+					onMismatch="DENY" />
+				<ThresholdFilter level="INFO" onMatch="ACCEPT"
+					onMismatch="DENY" />
+				<ThresholdFilter level="DEBUG" onMatch="ACCEPT"
+					onMismatch="DENY" />
+			</filters> -->
+		</Console>
+		<!-- <Console name="STDERR" target="SYSTEM_ERR">
+			<PatternLayout pattern="${LOG_PATTERN_ERROR}" />
+			<filters>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="FETAL" onMatch="ACCEPT"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="WARN" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="INFO" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="DEBUG" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="TRACE" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+			</filters>
+		</Console> -->
+		<RollingFile name="appLog"
+			fileName="${APP_LOG_ROOT}/SpringBoot2App/application.log"
+			filePattern="${APP_LOG_ROOT}/SpringBoot2App/application-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="19500KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<!-- <Logger name="com.*" level="info" additivity="false"> <AppenderRef 
+			ref="STDOUT" /> <AppenderRef ref="STDERR" /> <AppenderRef ref="appLog" /> 
+			</Logger> -->
+		<Root level="info">
+			<AppenderRef ref="STDOUT" />
+			<!-- <AppenderRef ref="STDERR" /> -->
+			<AppenderRef ref="appLog" />
+		</Root>
+	</Loggers>
+</Configuration>
